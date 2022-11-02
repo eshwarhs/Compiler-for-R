@@ -1,0 +1,2206 @@
+Terminals unused in grammar
+
+   T_LIBRARY
+   T_IN
+   T_BY
+   T_LENGTHOUT
+   T_COPEN
+   T_SEQOPEN
+   '<'
+   '>'
+   '='
+
+
+Grammar
+
+    0 $accept: Q $end
+
+    1 Q: S
+
+    2 S: WHILE S
+    3  | IF S
+
+    4 $@1: %empty
+
+    5 S: $@1 EXP S
+    6  | REPEAT S
+    7  | BREAK S
+    8  | T_PRINT '(' ITEM ')' T_NL S
+
+    9 $@2: %empty
+
+   10 $@3: %empty
+
+   11 S: T_CO $@2 N S T_CC $@3 T_NL S
+   12  | error T_NL S
+   13  | %empty
+
+   14 $@4: %empty
+
+   15 $@5: %empty
+
+   16 WHILE: T_WHILE N '(' N COND N ')' N T_CO $@4 N S T_CC $@5 T_NL
+
+   17 $@6: %empty
+
+   18 IF: T_IF N '(' N COND N ')' N T_CO $@6 NIF
+
+   19 NIF: N S T_CC T_NL
+   20    | N S T_CC T_NL E
+
+   21 $@7: %empty
+
+   22 $@8: %empty
+
+   23 REPEAT: T_REPEAT N T_CO $@7 N S T_CC $@8 T_NL
+
+   24 BREAK: T_BREAK T_NL
+
+   25 $@9: %empty
+
+   26 $@10: %empty
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N T_CO $@9 N S T_CC $@10 T_NL E
+
+   28 $@11: %empty
+
+   29 $@12: %empty
+
+   30 E: T_ELSE N T_CO $@11 N S T_CC $@12 T_NL
+
+   31 EXP: K RELOP K T_NL
+   32    | ID ASSIGNOP K T_NL
+   33    | K T_NL
+
+   34 COND: K RELOP K
+   35     | ID ASSIGNOP K
+   36     | K LOGICOP K
+   37     | K
+
+   38 K: K T_ADD L
+   39  | K T_SUB L
+   40  | L
+
+   41 L: L T_MUL M
+   42  | L T_DIV M
+   43  | M
+
+   44 M: M T_MOD O
+   45  | M T_MMOD O
+   46  | O
+
+   47 O: ID
+   48  | NUM
+   49  | '(' K ')'
+   50  | ID '[' INDEX ']'
+
+   51 INDEX: NUM ',' INDEX
+   52      | ID ',' INDEX
+   53      | NUM
+   54      | ID
+
+   55 RELOP: T_LT
+   56      | T_GT
+   57      | T_EE
+   58      | T_LE
+   59      | T_GE
+   60      | T_NE
+
+   61 ASSIGNOP: T_EQ
+   62         | T_LA
+   63         | T_RA
+
+   64 LOGICOP: T_AND
+   65        | T_OR
+
+   66 ITEM: NUM
+   67     | BOOL
+   68     | STR
+   69     | PASTE
+   70     | ID
+
+   71 PASTE: T_PASTEO '(' PASTEIN ')'
+
+   72 PASTEIN: STR ',' PASTEIN
+   73        | ID ',' PASTEIN
+   74        | %empty
+
+   75 N: T_NL
+   76  | %empty
+
+   77 NUM: T_NUM
+
+   78 BOOL: T_TRUE
+   79     | T_FALSE
+
+   80 STR: T_STR
+
+   81 ID: T_ID
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 8 16 18 27 49 71
+')' (41) 8 16 18 27 49 71
+',' (44) 51 52 72 73
+'<' (60)
+'=' (61)
+'>' (62)
+'[' (91) 50
+']' (93) 50
+error (256) 12
+T_LIBRARY (258)
+T_NL (259) 8 11 12 16 19 20 23 24 27 30 31 32 33 75
+T_PRINT (260) 8
+T_WHILE (261) 16
+T_IF (262) 18 27
+T_IN (263)
+T_ELSE (264) 27 30
+T_BY (265)
+T_BREAK (266) 24
+T_REPEAT (267) 23
+T_LENGTHOUT (268)
+T_PASTEO (269) 71
+T_TRUE (270) 78
+T_FALSE (271) 79
+T_MOD (272) 44
+T_MMOD (273) 45
+T_NUM (274) 77
+T_STR (275) 80
+T_ID (276) 81
+T_COPEN (277)
+T_SEQOPEN (278)
+T_CO (279) 11 16 18 23 27 30
+T_CC (280) 11 16 19 20 23 27 30
+T_ADD (281) 38
+T_SUB (282) 39
+T_MUL (283) 41
+T_DIV (284) 42
+T_GT (285) 56
+T_LT (286) 55
+T_EQ (287) 61
+T_AND (288) 64
+T_OR (289) 65
+T_LE (290) 58
+T_GE (291) 59
+T_EE (292) 57
+T_NE (293) 60
+T_RA (294) 63
+T_LA (295) 62
+
+
+Nonterminals, with rules where they appear
+
+$accept (49)
+    on left: 0
+Q (50)
+    on left: 1, on right: 0
+S (51)
+    on left: 2 3 5 6 7 8 11 12 13, on right: 1 2 3 5 6 7 8 11 12 16
+    19 20 23 27 30
+$@1 (52)
+    on left: 4, on right: 5
+$@2 (53)
+    on left: 9, on right: 11
+$@3 (54)
+    on left: 10, on right: 11
+WHILE (55)
+    on left: 16, on right: 2
+$@4 (56)
+    on left: 14, on right: 16
+$@5 (57)
+    on left: 15, on right: 16
+IF (58)
+    on left: 18, on right: 3
+$@6 (59)
+    on left: 17, on right: 18
+NIF (60)
+    on left: 19 20, on right: 18
+REPEAT (61)
+    on left: 23, on right: 6
+$@7 (62)
+    on left: 21, on right: 23
+$@8 (63)
+    on left: 22, on right: 23
+BREAK (64)
+    on left: 24, on right: 7
+E (65)
+    on left: 27 30, on right: 20 27
+$@9 (66)
+    on left: 25, on right: 27
+$@10 (67)
+    on left: 26, on right: 27
+$@11 (68)
+    on left: 28, on right: 30
+$@12 (69)
+    on left: 29, on right: 30
+EXP (70)
+    on left: 31 32 33, on right: 5
+COND (71)
+    on left: 34 35 36 37, on right: 16 18 27
+K (72)
+    on left: 38 39 40, on right: 31 32 33 34 35 36 37 38 39 49
+L (73)
+    on left: 41 42 43, on right: 38 39 40 41 42
+M (74)
+    on left: 44 45 46, on right: 41 42 43 44 45
+O (75)
+    on left: 47 48 49 50, on right: 44 45 46
+INDEX (76)
+    on left: 51 52 53 54, on right: 50 51 52
+RELOP (77)
+    on left: 55 56 57 58 59 60, on right: 31 34
+ASSIGNOP (78)
+    on left: 61 62 63, on right: 32 35
+LOGICOP (79)
+    on left: 64 65, on right: 36
+ITEM (80)
+    on left: 66 67 68 69 70, on right: 8
+PASTE (81)
+    on left: 71, on right: 69
+PASTEIN (82)
+    on left: 72 73 74, on right: 71 72 73
+N (83)
+    on left: 75 76, on right: 11 16 18 19 20 23 27 30
+NUM (84)
+    on left: 77, on right: 48 51 53 66
+BOOL (85)
+    on left: 78 79, on right: 67
+STR (86)
+    on left: 80, on right: 68 72
+ID (87)
+    on left: 81, on right: 32 35 47 50 52 54 70 73
+
+
+State 0
+
+    0 $accept: . Q $end
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    $end   reduce using rule 13 (S)
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    '('    reduce using rule 4 ($@1)
+
+    Q       go to state 8
+    S       go to state 9
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 1
+
+   12 S: error . T_NL S
+
+    T_NL  shift, and go to state 15
+
+
+State 2
+
+    8 S: T_PRINT . '(' ITEM ')' T_NL S
+
+    '('  shift, and go to state 16
+
+
+State 3
+
+   16 WHILE: T_WHILE . N '(' N COND N ')' N T_CO $@4 N S T_CC $@5 T_NL
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 18
+
+
+State 4
+
+   18 IF: T_IF . N '(' N COND N ')' N T_CO $@6 NIF
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 19
+
+
+State 5
+
+   24 BREAK: T_BREAK . T_NL
+
+    T_NL  shift, and go to state 20
+
+
+State 6
+
+   23 REPEAT: T_REPEAT . N T_CO $@7 N S T_CC $@8 T_NL
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 21
+
+
+State 7
+
+   11 S: T_CO . $@2 N S T_CC $@3 T_NL S
+
+    $default  reduce using rule 9 ($@2)
+
+    $@2  go to state 22
+
+
+State 8
+
+    0 $accept: Q . $end
+
+    $end  shift, and go to state 23
+
+
+State 9
+
+    1 Q: S .
+
+    $default  reduce using rule 1 (Q)
+
+
+State 10
+
+    5 S: $@1 . EXP S
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    EXP  go to state 27
+    K    go to state 28
+    L    go to state 29
+    M    go to state 30
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 33
+
+
+State 11
+
+    2 S: WHILE . S
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    $end   reduce using rule 13 (S)
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 34
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 12
+
+    3 S: IF . S
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    $end   reduce using rule 13 (S)
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 35
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 13
+
+    6 S: REPEAT . S
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    $end   reduce using rule 13 (S)
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 36
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 14
+
+    7 S: BREAK . S
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    $end   reduce using rule 13 (S)
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 37
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 15
+
+   12 S: error T_NL . S
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    $end   reduce using rule 13 (S)
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 38
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 16
+
+    8 S: T_PRINT '(' . ITEM ')' T_NL S
+
+    T_PASTEO  shift, and go to state 39
+    T_TRUE    shift, and go to state 40
+    T_FALSE   shift, and go to state 41
+    T_NUM     shift, and go to state 24
+    T_STR     shift, and go to state 42
+    T_ID      shift, and go to state 25
+
+    ITEM   go to state 43
+    PASTE  go to state 44
+    NUM    go to state 45
+    BOOL   go to state 46
+    STR    go to state 47
+    ID     go to state 48
+
+
+State 17
+
+   75 N: T_NL .
+
+    $default  reduce using rule 75 (N)
+
+
+State 18
+
+   16 WHILE: T_WHILE N . '(' N COND N ')' N T_CO $@4 N S T_CC $@5 T_NL
+
+    '('  shift, and go to state 49
+
+
+State 19
+
+   18 IF: T_IF N . '(' N COND N ')' N T_CO $@6 NIF
+
+    '('  shift, and go to state 50
+
+
+State 20
+
+   24 BREAK: T_BREAK T_NL .
+
+    $default  reduce using rule 24 (BREAK)
+
+
+State 21
+
+   23 REPEAT: T_REPEAT N . T_CO $@7 N S T_CC $@8 T_NL
+
+    T_CO  shift, and go to state 51
+
+
+State 22
+
+   11 S: T_CO $@2 . N S T_CC $@3 T_NL S
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 52
+
+
+State 23
+
+    0 $accept: Q $end .
+
+    $default  accept
+
+
+State 24
+
+   77 NUM: T_NUM .
+
+    $default  reduce using rule 77 (NUM)
+
+
+State 25
+
+   81 ID: T_ID .
+
+    $default  reduce using rule 81 (ID)
+
+
+State 26
+
+   49 O: '(' . K ')'
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    K    go to state 53
+    L    go to state 29
+    M    go to state 30
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 27
+
+    5 S: $@1 EXP . S
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    $end   reduce using rule 13 (S)
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 55
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 28
+
+   31 EXP: K . RELOP K T_NL
+   33    | K . T_NL
+   38 K: K . T_ADD L
+   39  | K . T_SUB L
+
+    T_NL   shift, and go to state 56
+    T_ADD  shift, and go to state 57
+    T_SUB  shift, and go to state 58
+    T_GT   shift, and go to state 59
+    T_LT   shift, and go to state 60
+    T_LE   shift, and go to state 61
+    T_GE   shift, and go to state 62
+    T_EE   shift, and go to state 63
+    T_NE   shift, and go to state 64
+
+    RELOP  go to state 65
+
+
+State 29
+
+   40 K: L .
+   41 L: L . T_MUL M
+   42  | L . T_DIV M
+
+    T_MUL  shift, and go to state 66
+    T_DIV  shift, and go to state 67
+
+    $default  reduce using rule 40 (K)
+
+
+State 30
+
+   43 L: M .
+   44 M: M . T_MOD O
+   45  | M . T_MMOD O
+
+    T_MOD   shift, and go to state 68
+    T_MMOD  shift, and go to state 69
+
+    $default  reduce using rule 43 (L)
+
+
+State 31
+
+   46 M: O .
+
+    $default  reduce using rule 46 (M)
+
+
+State 32
+
+   48 O: NUM .
+
+    $default  reduce using rule 48 (O)
+
+
+State 33
+
+   32 EXP: ID . ASSIGNOP K T_NL
+   47 O: ID .
+   50  | ID . '[' INDEX ']'
+
+    T_EQ  shift, and go to state 70
+    T_RA  shift, and go to state 71
+    T_LA  shift, and go to state 72
+    '['   shift, and go to state 73
+
+    $default  reduce using rule 47 (O)
+
+    ASSIGNOP  go to state 74
+
+
+State 34
+
+    2 S: WHILE S .
+
+    $default  reduce using rule 2 (S)
+
+
+State 35
+
+    3 S: IF S .
+
+    $default  reduce using rule 3 (S)
+
+
+State 36
+
+    6 S: REPEAT S .
+
+    $default  reduce using rule 6 (S)
+
+
+State 37
+
+    7 S: BREAK S .
+
+    $default  reduce using rule 7 (S)
+
+
+State 38
+
+   12 S: error T_NL S .
+
+    $default  reduce using rule 12 (S)
+
+
+State 39
+
+   71 PASTE: T_PASTEO . '(' PASTEIN ')'
+
+    '('  shift, and go to state 75
+
+
+State 40
+
+   78 BOOL: T_TRUE .
+
+    $default  reduce using rule 78 (BOOL)
+
+
+State 41
+
+   79 BOOL: T_FALSE .
+
+    $default  reduce using rule 79 (BOOL)
+
+
+State 42
+
+   80 STR: T_STR .
+
+    $default  reduce using rule 80 (STR)
+
+
+State 43
+
+    8 S: T_PRINT '(' ITEM . ')' T_NL S
+
+    ')'  shift, and go to state 76
+
+
+State 44
+
+   69 ITEM: PASTE .
+
+    $default  reduce using rule 69 (ITEM)
+
+
+State 45
+
+   66 ITEM: NUM .
+
+    $default  reduce using rule 66 (ITEM)
+
+
+State 46
+
+   67 ITEM: BOOL .
+
+    $default  reduce using rule 67 (ITEM)
+
+
+State 47
+
+   68 ITEM: STR .
+
+    $default  reduce using rule 68 (ITEM)
+
+
+State 48
+
+   70 ITEM: ID .
+
+    $default  reduce using rule 70 (ITEM)
+
+
+State 49
+
+   16 WHILE: T_WHILE N '(' . N COND N ')' N T_CO $@4 N S T_CC $@5 T_NL
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 77
+
+
+State 50
+
+   18 IF: T_IF N '(' . N COND N ')' N T_CO $@6 NIF
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 78
+
+
+State 51
+
+   23 REPEAT: T_REPEAT N T_CO . $@7 N S T_CC $@8 T_NL
+
+    $default  reduce using rule 21 ($@7)
+
+    $@7  go to state 79
+
+
+State 52
+
+   11 S: T_CO $@2 N . S T_CC $@3 T_NL S
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 80
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 53
+
+   38 K: K . T_ADD L
+   39  | K . T_SUB L
+   49 O: '(' K . ')'
+
+    T_ADD  shift, and go to state 57
+    T_SUB  shift, and go to state 58
+    ')'    shift, and go to state 81
+
+
+State 54
+
+   47 O: ID .
+   50  | ID . '[' INDEX ']'
+
+    '['  shift, and go to state 73
+
+    $default  reduce using rule 47 (O)
+
+
+State 55
+
+    5 S: $@1 EXP S .
+
+    $default  reduce using rule 5 (S)
+
+
+State 56
+
+   33 EXP: K T_NL .
+
+    $default  reduce using rule 33 (EXP)
+
+
+State 57
+
+   38 K: K T_ADD . L
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    L    go to state 82
+    M    go to state 30
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 58
+
+   39 K: K T_SUB . L
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    L    go to state 83
+    M    go to state 30
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 59
+
+   56 RELOP: T_GT .
+
+    $default  reduce using rule 56 (RELOP)
+
+
+State 60
+
+   55 RELOP: T_LT .
+
+    $default  reduce using rule 55 (RELOP)
+
+
+State 61
+
+   58 RELOP: T_LE .
+
+    $default  reduce using rule 58 (RELOP)
+
+
+State 62
+
+   59 RELOP: T_GE .
+
+    $default  reduce using rule 59 (RELOP)
+
+
+State 63
+
+   57 RELOP: T_EE .
+
+    $default  reduce using rule 57 (RELOP)
+
+
+State 64
+
+   60 RELOP: T_NE .
+
+    $default  reduce using rule 60 (RELOP)
+
+
+State 65
+
+   31 EXP: K RELOP . K T_NL
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    K    go to state 84
+    L    go to state 29
+    M    go to state 30
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 66
+
+   41 L: L T_MUL . M
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    M    go to state 85
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 67
+
+   42 L: L T_DIV . M
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    M    go to state 86
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 68
+
+   44 M: M T_MOD . O
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    O    go to state 87
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 69
+
+   45 M: M T_MMOD . O
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    O    go to state 88
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 70
+
+   61 ASSIGNOP: T_EQ .
+
+    $default  reduce using rule 61 (ASSIGNOP)
+
+
+State 71
+
+   63 ASSIGNOP: T_RA .
+
+    $default  reduce using rule 63 (ASSIGNOP)
+
+
+State 72
+
+   62 ASSIGNOP: T_LA .
+
+    $default  reduce using rule 62 (ASSIGNOP)
+
+
+State 73
+
+   50 O: ID '[' . INDEX ']'
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+
+    INDEX  go to state 89
+    NUM    go to state 90
+    ID     go to state 91
+
+
+State 74
+
+   32 EXP: ID ASSIGNOP . K T_NL
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    K    go to state 92
+    L    go to state 29
+    M    go to state 30
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 75
+
+   71 PASTE: T_PASTEO '(' . PASTEIN ')'
+
+    T_STR  shift, and go to state 42
+    T_ID   shift, and go to state 25
+
+    $default  reduce using rule 74 (PASTEIN)
+
+    PASTEIN  go to state 93
+    STR      go to state 94
+    ID       go to state 95
+
+
+State 76
+
+    8 S: T_PRINT '(' ITEM ')' . T_NL S
+
+    T_NL  shift, and go to state 96
+
+
+State 77
+
+   16 WHILE: T_WHILE N '(' N . COND N ')' N T_CO $@4 N S T_CC $@5 T_NL
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    COND  go to state 97
+    K     go to state 98
+    L     go to state 29
+    M     go to state 30
+    O     go to state 31
+    NUM   go to state 32
+    ID    go to state 99
+
+
+State 78
+
+   18 IF: T_IF N '(' N . COND N ')' N T_CO $@6 NIF
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    COND  go to state 100
+    K     go to state 98
+    L     go to state 29
+    M     go to state 30
+    O     go to state 31
+    NUM   go to state 32
+    ID    go to state 99
+
+
+State 79
+
+   23 REPEAT: T_REPEAT N T_CO $@7 . N S T_CC $@8 T_NL
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 101
+
+
+State 80
+
+   11 S: T_CO $@2 N S . T_CC $@3 T_NL S
+
+    T_CC  shift, and go to state 102
+
+
+State 81
+
+   49 O: '(' K ')' .
+
+    $default  reduce using rule 49 (O)
+
+
+State 82
+
+   38 K: K T_ADD L .
+   41 L: L . T_MUL M
+   42  | L . T_DIV M
+
+    T_MUL  shift, and go to state 66
+    T_DIV  shift, and go to state 67
+
+    $default  reduce using rule 38 (K)
+
+
+State 83
+
+   39 K: K T_SUB L .
+   41 L: L . T_MUL M
+   42  | L . T_DIV M
+
+    T_MUL  shift, and go to state 66
+    T_DIV  shift, and go to state 67
+
+    $default  reduce using rule 39 (K)
+
+
+State 84
+
+   31 EXP: K RELOP K . T_NL
+   38 K: K . T_ADD L
+   39  | K . T_SUB L
+
+    T_NL   shift, and go to state 103
+    T_ADD  shift, and go to state 57
+    T_SUB  shift, and go to state 58
+
+
+State 85
+
+   41 L: L T_MUL M .
+   44 M: M . T_MOD O
+   45  | M . T_MMOD O
+
+    T_MOD   shift, and go to state 68
+    T_MMOD  shift, and go to state 69
+
+    $default  reduce using rule 41 (L)
+
+
+State 86
+
+   42 L: L T_DIV M .
+   44 M: M . T_MOD O
+   45  | M . T_MMOD O
+
+    T_MOD   shift, and go to state 68
+    T_MMOD  shift, and go to state 69
+
+    $default  reduce using rule 42 (L)
+
+
+State 87
+
+   44 M: M T_MOD O .
+
+    $default  reduce using rule 44 (M)
+
+
+State 88
+
+   45 M: M T_MMOD O .
+
+    $default  reduce using rule 45 (M)
+
+
+State 89
+
+   50 O: ID '[' INDEX . ']'
+
+    ']'  shift, and go to state 104
+
+
+State 90
+
+   51 INDEX: NUM . ',' INDEX
+   53      | NUM .
+
+    ','  shift, and go to state 105
+
+    $default  reduce using rule 53 (INDEX)
+
+
+State 91
+
+   52 INDEX: ID . ',' INDEX
+   54      | ID .
+
+    ','  shift, and go to state 106
+
+    $default  reduce using rule 54 (INDEX)
+
+
+State 92
+
+   32 EXP: ID ASSIGNOP K . T_NL
+   38 K: K . T_ADD L
+   39  | K . T_SUB L
+
+    T_NL   shift, and go to state 107
+    T_ADD  shift, and go to state 57
+    T_SUB  shift, and go to state 58
+
+
+State 93
+
+   71 PASTE: T_PASTEO '(' PASTEIN . ')'
+
+    ')'  shift, and go to state 108
+
+
+State 94
+
+   72 PASTEIN: STR . ',' PASTEIN
+
+    ','  shift, and go to state 109
+
+
+State 95
+
+   73 PASTEIN: ID . ',' PASTEIN
+
+    ','  shift, and go to state 110
+
+
+State 96
+
+    8 S: T_PRINT '(' ITEM ')' T_NL . S
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    $end   reduce using rule 13 (S)
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 111
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 97
+
+   16 WHILE: T_WHILE N '(' N COND . N ')' N T_CO $@4 N S T_CC $@5 T_NL
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 112
+
+
+State 98
+
+   34 COND: K . RELOP K
+   36     | K . LOGICOP K
+   37     | K .
+   38 K: K . T_ADD L
+   39  | K . T_SUB L
+
+    T_ADD  shift, and go to state 57
+    T_SUB  shift, and go to state 58
+    T_GT   shift, and go to state 59
+    T_LT   shift, and go to state 60
+    T_AND  shift, and go to state 113
+    T_OR   shift, and go to state 114
+    T_LE   shift, and go to state 61
+    T_GE   shift, and go to state 62
+    T_EE   shift, and go to state 63
+    T_NE   shift, and go to state 64
+
+    $default  reduce using rule 37 (COND)
+
+    RELOP    go to state 115
+    LOGICOP  go to state 116
+
+
+State 99
+
+   35 COND: ID . ASSIGNOP K
+   47 O: ID .
+   50  | ID . '[' INDEX ']'
+
+    T_EQ  shift, and go to state 70
+    T_RA  shift, and go to state 71
+    T_LA  shift, and go to state 72
+    '['   shift, and go to state 73
+
+    $default  reduce using rule 47 (O)
+
+    ASSIGNOP  go to state 117
+
+
+State 100
+
+   18 IF: T_IF N '(' N COND . N ')' N T_CO $@6 NIF
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 118
+
+
+State 101
+
+   23 REPEAT: T_REPEAT N T_CO $@7 N . S T_CC $@8 T_NL
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 119
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 102
+
+   11 S: T_CO $@2 N S T_CC . $@3 T_NL S
+
+    $default  reduce using rule 10 ($@3)
+
+    $@3  go to state 120
+
+
+State 103
+
+   31 EXP: K RELOP K T_NL .
+
+    $default  reduce using rule 31 (EXP)
+
+
+State 104
+
+   50 O: ID '[' INDEX ']' .
+
+    $default  reduce using rule 50 (O)
+
+
+State 105
+
+   51 INDEX: NUM ',' . INDEX
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+
+    INDEX  go to state 121
+    NUM    go to state 90
+    ID     go to state 91
+
+
+State 106
+
+   52 INDEX: ID ',' . INDEX
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+
+    INDEX  go to state 122
+    NUM    go to state 90
+    ID     go to state 91
+
+
+State 107
+
+   32 EXP: ID ASSIGNOP K T_NL .
+
+    $default  reduce using rule 32 (EXP)
+
+
+State 108
+
+   71 PASTE: T_PASTEO '(' PASTEIN ')' .
+
+    $default  reduce using rule 71 (PASTE)
+
+
+State 109
+
+   72 PASTEIN: STR ',' . PASTEIN
+
+    T_STR  shift, and go to state 42
+    T_ID   shift, and go to state 25
+
+    $default  reduce using rule 74 (PASTEIN)
+
+    PASTEIN  go to state 123
+    STR      go to state 94
+    ID       go to state 95
+
+
+State 110
+
+   73 PASTEIN: ID ',' . PASTEIN
+
+    T_STR  shift, and go to state 42
+    T_ID   shift, and go to state 25
+
+    $default  reduce using rule 74 (PASTEIN)
+
+    PASTEIN  go to state 124
+    STR      go to state 94
+    ID       go to state 95
+
+
+State 111
+
+    8 S: T_PRINT '(' ITEM ')' T_NL S .
+
+    $default  reduce using rule 8 (S)
+
+
+State 112
+
+   16 WHILE: T_WHILE N '(' N COND N . ')' N T_CO $@4 N S T_CC $@5 T_NL
+
+    ')'  shift, and go to state 125
+
+
+State 113
+
+   64 LOGICOP: T_AND .
+
+    $default  reduce using rule 64 (LOGICOP)
+
+
+State 114
+
+   65 LOGICOP: T_OR .
+
+    $default  reduce using rule 65 (LOGICOP)
+
+
+State 115
+
+   34 COND: K RELOP . K
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    K    go to state 126
+    L    go to state 29
+    M    go to state 30
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 116
+
+   36 COND: K LOGICOP . K
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    K    go to state 127
+    L    go to state 29
+    M    go to state 30
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 117
+
+   35 COND: ID ASSIGNOP . K
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    K    go to state 128
+    L    go to state 29
+    M    go to state 30
+    O    go to state 31
+    NUM  go to state 32
+    ID   go to state 54
+
+
+State 118
+
+   18 IF: T_IF N '(' N COND N . ')' N T_CO $@6 NIF
+
+    ')'  shift, and go to state 129
+
+
+State 119
+
+   23 REPEAT: T_REPEAT N T_CO $@7 N S . T_CC $@8 T_NL
+
+    T_CC  shift, and go to state 130
+
+
+State 120
+
+   11 S: T_CO $@2 N S T_CC $@3 . T_NL S
+
+    T_NL  shift, and go to state 131
+
+
+State 121
+
+   51 INDEX: NUM ',' INDEX .
+
+    $default  reduce using rule 51 (INDEX)
+
+
+State 122
+
+   52 INDEX: ID ',' INDEX .
+
+    $default  reduce using rule 52 (INDEX)
+
+
+State 123
+
+   72 PASTEIN: STR ',' PASTEIN .
+
+    $default  reduce using rule 72 (PASTEIN)
+
+
+State 124
+
+   73 PASTEIN: ID ',' PASTEIN .
+
+    $default  reduce using rule 73 (PASTEIN)
+
+
+State 125
+
+   16 WHILE: T_WHILE N '(' N COND N ')' . N T_CO $@4 N S T_CC $@5 T_NL
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 132
+
+
+State 126
+
+   34 COND: K RELOP K .
+   38 K: K . T_ADD L
+   39  | K . T_SUB L
+
+    T_ADD  shift, and go to state 57
+    T_SUB  shift, and go to state 58
+
+    $default  reduce using rule 34 (COND)
+
+
+State 127
+
+   36 COND: K LOGICOP K .
+   38 K: K . T_ADD L
+   39  | K . T_SUB L
+
+    T_ADD  shift, and go to state 57
+    T_SUB  shift, and go to state 58
+
+    $default  reduce using rule 36 (COND)
+
+
+State 128
+
+   35 COND: ID ASSIGNOP K .
+   38 K: K . T_ADD L
+   39  | K . T_SUB L
+
+    T_ADD  shift, and go to state 57
+    T_SUB  shift, and go to state 58
+
+    $default  reduce using rule 35 (COND)
+
+
+State 129
+
+   18 IF: T_IF N '(' N COND N ')' . N T_CO $@6 NIF
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 133
+
+
+State 130
+
+   23 REPEAT: T_REPEAT N T_CO $@7 N S T_CC . $@8 T_NL
+
+    $default  reduce using rule 22 ($@8)
+
+    $@8  go to state 134
+
+
+State 131
+
+   11 S: T_CO $@2 N S T_CC $@3 T_NL . S
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    $end   reduce using rule 13 (S)
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 135
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 132
+
+   16 WHILE: T_WHILE N '(' N COND N ')' N . T_CO $@4 N S T_CC $@5 T_NL
+
+    T_CO  shift, and go to state 136
+
+
+State 133
+
+   18 IF: T_IF N '(' N COND N ')' N . T_CO $@6 NIF
+
+    T_CO  shift, and go to state 137
+
+
+State 134
+
+   23 REPEAT: T_REPEAT N T_CO $@7 N S T_CC $@8 . T_NL
+
+    T_NL  shift, and go to state 138
+
+
+State 135
+
+   11 S: T_CO $@2 N S T_CC $@3 T_NL S .
+
+    $default  reduce using rule 11 (S)
+
+
+State 136
+
+   16 WHILE: T_WHILE N '(' N COND N ')' N T_CO . $@4 N S T_CC $@5 T_NL
+
+    $default  reduce using rule 14 ($@4)
+
+    $@4  go to state 139
+
+
+State 137
+
+   18 IF: T_IF N '(' N COND N ')' N T_CO . $@6 NIF
+
+    $default  reduce using rule 17 ($@6)
+
+    $@6  go to state 140
+
+
+State 138
+
+   23 REPEAT: T_REPEAT N T_CO $@7 N S T_CC $@8 T_NL .
+
+    $default  reduce using rule 23 (REPEAT)
+
+
+State 139
+
+   16 WHILE: T_WHILE N '(' N COND N ')' N T_CO $@4 . N S T_CC $@5 T_NL
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 141
+
+
+State 140
+
+   18 IF: T_IF N '(' N COND N ')' N T_CO $@6 . NIF
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    NIF  go to state 142
+    N    go to state 143
+
+
+State 141
+
+   16 WHILE: T_WHILE N '(' N COND N ')' N T_CO $@4 N . S T_CC $@5 T_NL
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 144
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 142
+
+   18 IF: T_IF N '(' N COND N ')' N T_CO $@6 NIF .
+
+    $default  reduce using rule 18 (IF)
+
+
+State 143
+
+   19 NIF: N . S T_CC T_NL
+   20    | N . S T_CC T_NL E
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 145
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 144
+
+   16 WHILE: T_WHILE N '(' N COND N ')' N T_CO $@4 N S . T_CC $@5 T_NL
+
+    T_CC  shift, and go to state 146
+
+
+State 145
+
+   19 NIF: N S . T_CC T_NL
+   20    | N S . T_CC T_NL E
+
+    T_CC  shift, and go to state 147
+
+
+State 146
+
+   16 WHILE: T_WHILE N '(' N COND N ')' N T_CO $@4 N S T_CC . $@5 T_NL
+
+    $default  reduce using rule 15 ($@5)
+
+    $@5  go to state 148
+
+
+State 147
+
+   19 NIF: N S T_CC . T_NL
+   20    | N S T_CC . T_NL E
+
+    T_NL  shift, and go to state 149
+
+
+State 148
+
+   16 WHILE: T_WHILE N '(' N COND N ')' N T_CO $@4 N S T_CC $@5 . T_NL
+
+    T_NL  shift, and go to state 150
+
+
+State 149
+
+   19 NIF: N S T_CC T_NL .
+   20    | N S T_CC T_NL . E
+
+    T_ELSE  shift, and go to state 151
+
+    $default  reduce using rule 19 (NIF)
+
+    E  go to state 152
+
+
+State 150
+
+   16 WHILE: T_WHILE N '(' N COND N ')' N T_CO $@4 N S T_CC $@5 T_NL .
+
+    $default  reduce using rule 16 (WHILE)
+
+
+State 151
+
+   27 E: T_ELSE . N T_IF N '(' N COND N ')' N T_CO $@9 N S T_CC $@10 T_NL E
+   30  | T_ELSE . N T_CO $@11 N S T_CC $@12 T_NL
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 153
+
+
+State 152
+
+   20 NIF: N S T_CC T_NL E .
+
+    $default  reduce using rule 20 (NIF)
+
+
+State 153
+
+   27 E: T_ELSE N . T_IF N '(' N COND N ')' N T_CO $@9 N S T_CC $@10 T_NL E
+   30  | T_ELSE N . T_CO $@11 N S T_CC $@12 T_NL
+
+    T_IF  shift, and go to state 154
+    T_CO  shift, and go to state 155
+
+
+State 154
+
+   27 E: T_ELSE N T_IF . N '(' N COND N ')' N T_CO $@9 N S T_CC $@10 T_NL E
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 156
+
+
+State 155
+
+   30 E: T_ELSE N T_CO . $@11 N S T_CC $@12 T_NL
+
+    $default  reduce using rule 28 ($@11)
+
+    $@11  go to state 157
+
+
+State 156
+
+   27 E: T_ELSE N T_IF N . '(' N COND N ')' N T_CO $@9 N S T_CC $@10 T_NL E
+
+    '('  shift, and go to state 158
+
+
+State 157
+
+   30 E: T_ELSE N T_CO $@11 . N S T_CC $@12 T_NL
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 159
+
+
+State 158
+
+   27 E: T_ELSE N T_IF N '(' . N COND N ')' N T_CO $@9 N S T_CC $@10 T_NL E
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 160
+
+
+State 159
+
+   30 E: T_ELSE N T_CO $@11 N . S T_CC $@12 T_NL
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 161
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 160
+
+   27 E: T_ELSE N T_IF N '(' N . COND N ')' N T_CO $@9 N S T_CC $@10 T_NL E
+
+    T_NUM  shift, and go to state 24
+    T_ID   shift, and go to state 25
+    '('    shift, and go to state 26
+
+    COND  go to state 162
+    K     go to state 98
+    L     go to state 29
+    M     go to state 30
+    O     go to state 31
+    NUM   go to state 32
+    ID    go to state 99
+
+
+State 161
+
+   30 E: T_ELSE N T_CO $@11 N S . T_CC $@12 T_NL
+
+    T_CC  shift, and go to state 163
+
+
+State 162
+
+   27 E: T_ELSE N T_IF N '(' N COND . N ')' N T_CO $@9 N S T_CC $@10 T_NL E
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 164
+
+
+State 163
+
+   30 E: T_ELSE N T_CO $@11 N S T_CC . $@12 T_NL
+
+    $default  reduce using rule 29 ($@12)
+
+    $@12  go to state 165
+
+
+State 164
+
+   27 E: T_ELSE N T_IF N '(' N COND N . ')' N T_CO $@9 N S T_CC $@10 T_NL E
+
+    ')'  shift, and go to state 166
+
+
+State 165
+
+   30 E: T_ELSE N T_CO $@11 N S T_CC $@12 . T_NL
+
+    T_NL  shift, and go to state 167
+
+
+State 166
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' . N T_CO $@9 N S T_CC $@10 T_NL E
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 168
+
+
+State 167
+
+   30 E: T_ELSE N T_CO $@11 N S T_CC $@12 T_NL .
+
+    $default  reduce using rule 30 (E)
+
+
+State 168
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N . T_CO $@9 N S T_CC $@10 T_NL E
+
+    T_CO  shift, and go to state 169
+
+
+State 169
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N T_CO . $@9 N S T_CC $@10 T_NL E
+
+    $default  reduce using rule 25 ($@9)
+
+    $@9  go to state 170
+
+
+State 170
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N T_CO $@9 . N S T_CC $@10 T_NL E
+
+    T_NL  shift, and go to state 17
+
+    $default  reduce using rule 76 (N)
+
+    N  go to state 171
+
+
+State 171
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N T_CO $@9 N . S T_CC $@10 T_NL E
+
+    error     shift, and go to state 1
+    T_PRINT   shift, and go to state 2
+    T_WHILE   shift, and go to state 3
+    T_IF      shift, and go to state 4
+    T_BREAK   shift, and go to state 5
+    T_REPEAT  shift, and go to state 6
+    T_CO      shift, and go to state 7
+
+    T_NUM  reduce using rule 4 ($@1)
+    T_ID   reduce using rule 4 ($@1)
+    T_CC   reduce using rule 13 (S)
+    '('    reduce using rule 4 ($@1)
+
+    S       go to state 172
+    $@1     go to state 10
+    WHILE   go to state 11
+    IF      go to state 12
+    REPEAT  go to state 13
+    BREAK   go to state 14
+
+
+State 172
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N T_CO $@9 N S . T_CC $@10 T_NL E
+
+    T_CC  shift, and go to state 173
+
+
+State 173
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N T_CO $@9 N S T_CC . $@10 T_NL E
+
+    $default  reduce using rule 26 ($@10)
+
+    $@10  go to state 174
+
+
+State 174
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N T_CO $@9 N S T_CC $@10 . T_NL E
+
+    T_NL  shift, and go to state 175
+
+
+State 175
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N T_CO $@9 N S T_CC $@10 T_NL . E
+
+    T_ELSE  shift, and go to state 151
+
+    E  go to state 176
+
+
+State 176
+
+   27 E: T_ELSE N T_IF N '(' N COND N ')' N T_CO $@9 N S T_CC $@10 T_NL E .
+
+    $default  reduce using rule 27 (E)
