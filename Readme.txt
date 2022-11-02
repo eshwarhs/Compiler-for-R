@@ -1,16 +1,4 @@
-﻿Section : E
-
-
-Project Title: Mini-Compiler for 'while', 'if-else', and 'repeat' constructs in R Programming Language
-
-
-Team Members: Eshwar H S(PES1201700193) , Kethan M V(PES1201701085) , Anirudh Joshi(PES12101701558)
-
-
-Project Guide : Ms. Sunitha R 
-
-
-Project Abstract: 
+﻿Mini-Compiler for 'while', 'if-else', and 'repeat' constructs in R Programming Language
 
 
 Code Execution : -Syntax Phase
